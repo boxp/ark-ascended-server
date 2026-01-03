@@ -67,14 +67,16 @@ RUN mkdir "$ARK_PATH" \
     && rm "/home/steam/GE-Proton${GE_PROTON_VERSION}.tgz" \
     && echo "${IMAGE_VERSION}" > /home/steam/image_version \
     && echo "${MAINTAINER}" > /home/steam/image_maintainer \
-    && echo "${CONTAINER_UID}:${CONTAINER_GID}" > /home/steam/expected_filesystem_permissions \
-    && wget -O /tmp/xaudio.nupkg https://www.nuget.org/api/v2/package/Microsoft.XAudio2.Redist/1.2.13 \
+    && echo "${CONTAINER_UID}:${CONTAINER_GID}" > /home/steam/expected_filesystem_permissions
+
+# Add xaudio2_9.dll to fix ASA startup crash (https://github.com/boxp/arch/issues/6243)
+RUN wget -O /tmp/xaudio.nupkg https://www.nuget.org/api/v2/package/Microsoft.XAudio2.Redist/1.2.13 \
     && mkdir -p /tmp/xaudio \
     && unzip -q /tmp/xaudio.nupkg -d /tmp/xaudio \
     && mkdir -p "${ARK_PATH}/ShooterGame/Binaries/Win64" \
     && cp /tmp/xaudio/build/native/release/bin/x64/xaudio2_9redist.dll "${ARK_PATH}/ShooterGame/Binaries/Win64/xaudio2_9.dll" \
     && rm -rf /tmp/xaudio /tmp/xaudio.nupkg
-    
+
 COPY entrypoint.sh /home/steam/entrypoint.sh
 
 WORKDIR /home/steam
