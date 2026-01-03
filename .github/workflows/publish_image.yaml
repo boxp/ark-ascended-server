@@ -33,5 +33,4 @@ jobs:
           build-args: |
             IMAGE_VERSION=${{ github.sha }}
           tags: |
-            839695154978.dkr.ecr.ap-northeast-1.amazonaws.com/ark-ascended-server:latest
             839695154978.dkr.ecr.ap-northeast-1.amazonaws.com/ark-ascended-server:${{ github.sha }}
